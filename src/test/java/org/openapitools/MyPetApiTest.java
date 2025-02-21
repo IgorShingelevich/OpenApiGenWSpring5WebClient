@@ -3,10 +3,10 @@ package org.openapitools;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.Test;
-import org.openapitools.client.api.petStoreApi.PetApi;
 import org.openapitools.client.model.petStoreModel.Pet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -17,8 +17,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MyPetApiTest {
 
     private static final Logger logger = LoggerFactory.getLogger(MyPetApiTest.class);
+    private final RestClient restClient;
 
-    private final PetApi petApi = new PetApi();
+    public MyPetApiTest() {
+        WebClient webClient = WebClient.builder()
+                .baseUrl("https://petstore.swagger.io/v2")
+                .build();
+        this.restClient = new RestClient(webClient);
+    }
 
     @Test
     @Description("Test getting a pet by ID")
@@ -30,7 +36,7 @@ public class MyPetApiTest {
         });
 
         Pet pet = Allure.step("Act", () -> {
-            Pet retrievedPet = petApi.getPetById(petId).block();
+            Pet retrievedPet = restClient.get(Pet.class, "pet", petId);
             Allure.addAttachment("Retrieved Pet", retrievedPet.toString());
             return retrievedPet;
         });
@@ -55,13 +61,15 @@ public class MyPetApiTest {
         });
 
         Pet addedPet = Allure.step("Act", () -> {
-            petApi.addPet(newPet).block();
+            restClient.post(newPet, Pet.class, "pet");
             logger.info("Added pet: {}", newPet);
-            logger.info("Getting the added pet by name: {}", newPet.getName());
-            List<Pet> pets = petApi.findPetsByStatus(Arrays.asList(newPet.getStatus().getValue())).collectList().block();
-            Pet retrievedPet = pets.stream().filter(pet -> pet.getName().equals(newPet.getName())).findFirst().orElse(null);
-            Allure.addAttachment("Added Pet", retrievedPet.toString());
-            return retrievedPet;
+            logger.info("Getting the added pet by status: {}", newPet.getStatus().getValue());
+            List<String> queryParams = Arrays.asList("status=" + newPet.getStatus().getValue());
+            Pet[] pets = restClient.get(Pet[].class, queryParams, "pet", "findByStatus");
+            return Arrays.stream(pets)
+                    .filter(pet -> pet.getName() != null && pet.getName().equals(newPet.getName()))
+                    .findFirst()
+                    .orElse(null);
         });
 
         Allure.step("Assert", () -> {
@@ -82,34 +90,42 @@ public class MyPetApiTest {
 
         Allure.step("Arrange", () -> {
             logger.info("Adding pet to be deleted: {}", petToDelete);
-            petApi.addPet(petToDelete).block();
+            restClient.post(petToDelete, Pet.class, "pet");
             logger.info("Added pet to be deleted: {}", petToDelete);
-            List<Pet> pets = petApi.findPetsByStatus(Arrays.asList(petToDelete.getStatus().getValue())).collectList().block();
-            Pet addedPet = pets.stream().filter(pet -> pet.getName().equals(petToDelete.getName())).findFirst().orElse(null);
-            petToDelete.setId(addedPet.getId());
-            logger.info("Retrieved added pet: {}", addedPet);
-            Allure.addAttachment("Pet to Delete", petToDelete.toString());
+            List<String> queryParams = Arrays.asList("status=" + petToDelete.getStatus().getValue());
+            Pet[] pets = restClient.get(Pet[].class, queryParams, "pet", "findByStatus");
+            Pet addedPet = Arrays.stream(pets)
+                    .filter(pet -> pet.getName() != null && pet.getName().equals(petToDelete.getName()))
+                    .findFirst()
+                    .orElse(null);
+            if (addedPet != null) {
+                petToDelete.setId(addedPet.getId());
+                logger.info("Retrieved added pet: {}", addedPet);
+                Allure.addAttachment("Pet to Delete", petToDelete.toString());
+            } else {
+                logger.error("Could not find the added pet");
+            }
         });
 
         Allure.step("Act", () -> {
             logger.info("Getting the added pet by ID to ensure it exists: {}", petToDelete.getId());
-            Pet existingPet = petApi.getPetById(petToDelete.getId()).block();
+            Pet existingPet = restClient.get(Pet.class, "pet", petToDelete.getId());
             assertThat(existingPet).isNotNull();
 
             logger.info("Deleting the pet with ID: {}", petToDelete.getId());
-            petApi.deletePet(petToDelete.getId(), null).block();
+            restClient.delete(Pet.class, "pet", petToDelete.getId());
             Allure.addAttachment("Deleted Pet ID", petToDelete.getId().toString());
         });
 
         Allure.step("Assert", () -> {
             logger.info("Attempting to get the deleted pet by ID: {}", petToDelete.getId());
-            Pet deletedPet = petApi.getPetById(petToDelete.getId())
-                    .onErrorResume(error -> Mono.empty())
-                    .block();
-            Allure.addAttachment("Deleted Pet", deletedPet != null ? deletedPet.toString() : "null");
-
-            logger.info("Asserting the deleted pet is null");
-            assertThat(deletedPet).isNull();
+            try {
+                Pet deletedPet = restClient.get(Pet.class, "pet", petToDelete.getId());
+                assertThat(deletedPet).isNull();
+            } catch (Exception e) {
+                // Expected behavior - pet should not exist
+                logger.info("Pet was successfully deleted");
+            }
         });
     }
 }
