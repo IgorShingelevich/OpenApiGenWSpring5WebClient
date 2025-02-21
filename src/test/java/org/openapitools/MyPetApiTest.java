@@ -7,6 +7,7 @@ import org.openapitools.client.api.petStoreApi.PetApi;
 import org.openapitools.client.model.petStoreModel.Pet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
@@ -102,7 +103,9 @@ public class MyPetApiTest {
 
         Allure.step("Assert", () -> {
             logger.info("Attempting to get the deleted pet by ID: {}", petToDelete.getId());
-            Pet deletedPet = petApi.getPetById(petToDelete.getId()).onErrorReturn(null).block();
+            Pet deletedPet = petApi.getPetById(petToDelete.getId())
+                    .onErrorResume(error -> Mono.empty())
+                    .block();
             Allure.addAttachment("Deleted Pet", deletedPet != null ? deletedPet.toString() : "null");
 
             logger.info("Asserting the deleted pet is null");
