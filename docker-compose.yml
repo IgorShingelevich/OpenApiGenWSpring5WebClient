@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # PetStore v3 API сервер
+  petstore:
+    image: swaggerapi/petstore3:latest
+    container_name: petstore3-api
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=petstore
+      - DB_USER=petstore
+      - DB_PASS=petstore123
+      - DB_TYPE=postgres
+    depends_on:
+      - postgres
+    networks:
+      - petstore-network
+    restart: unless-stopped
+
+  # PostgreSQL база данных
+  postgres:
+    image: postgres:15-alpine
+    container_name: petstore-postgres
+    environment:
+      - POSTGRES_DB=petstore
+      - POSTGRES_USER=petstore
+      - POSTGRES_PASSWORD=petstore123
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d
+    networks:
+      - petstore-network
+    restart: unless-stopped
+
+  # pgAdmin для управления PostgreSQL (опционально)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: petstore-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@petstore.com
+      - PGADMIN_DEFAULT_PASSWORD=admin123
+      - PGADMIN_CONFIG_SERVER_MODE=False
+    ports:
+      - "8081:80"
+    depends_on:
+      - postgres
+    networks:
+      - petstore-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  petstore-network:
+    driver: bridge

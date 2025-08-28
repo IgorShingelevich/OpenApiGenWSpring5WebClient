@@ -7,11 +7,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 /**
  * Конфигурация WebClient для тестирования API.
  * Предоставляет настроенный WebClient с базовым URL и таймаутами.
+ * 
+ * Обновлено для работы с локальным PetStore v3 API с PostgreSQL
  */
 @Configuration
 public class WebClientConfig {
     
-    private static final String BASE_URL = "https://petstore.swagger.io/v2";
+    // Локальный PetStore v3 API с PostgreSQL
+    private static final String BASE_URL = "http://localhost:8080/api/v3";
     private static final int CONNECT_TIMEOUT = 10000; // 10 секунд
     private static final int READ_TIMEOUT = 30000; // 30 секунд
     
