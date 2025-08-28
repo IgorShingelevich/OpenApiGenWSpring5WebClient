@@ -2,6 +2,7 @@ package org.openapitools.client.clients;
 
 import org.openapitools.client.RestClient;
 import org.openapitools.client.model.petStoreModel.Pet;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public class PetRestClient extends BaseRestClient {
      */
     public List<Pet> findPetsByStatus(Pet.StatusEnum status) {
         List<String> queryParams = java.util.Arrays.asList("status=" + status.getValue());
-        return restClient.get(List.class, queryParams, "pet", "findByStatus");
+        return restClient.get(new ParameterizedTypeReference<List<Pet>>() {}, queryParams, "pet", "findByStatus");
     }
     
     /**
@@ -64,6 +65,6 @@ public class PetRestClient extends BaseRestClient {
     public List<Pet> findPetsByTags(List<String> tags) {
         String tagsParam = String.join(",", tags);
         List<String> queryParams = java.util.Arrays.asList("tags=" + tagsParam);
-        return restClient.get(List.class, queryParams, "pet", "findByTags");
+        return restClient.get(new ParameterizedTypeReference<List<Pet>>() {}, queryParams, "pet", "findByTags");
     }
 }

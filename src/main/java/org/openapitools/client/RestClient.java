@@ -1,5 +1,6 @@
 package org.openapitools.client;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriBuilder;
@@ -45,6 +46,15 @@ public class RestClient {
                           .header(HEADER_RQ_ID, buildRQID())
                           .retrieve()
                           .bodyToMono(returnedClass)
+                          .block();
+    }
+
+    public <T> T get(final ParameterizedTypeReference<T> typeReference, final List<String> queryParams, final Object... pathSegments) {
+        return apiUiClient.get()
+                          .uri(uriBuilder -> buildURIwQueryParams(uriBuilder, queryParams, pathSegments))
+                          .header(HEADER_RQ_ID, buildRQID())
+                          .retrieve()
+                          .bodyToMono(typeReference)
                           .block();
     }
 
