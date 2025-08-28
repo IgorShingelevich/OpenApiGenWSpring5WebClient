@@ -151,7 +151,7 @@
                         </goals>
                         <configuration>
                             <generatorName>java</generatorName>
-                            <inputSpec>https://petstore.swagger.io/v2/swagger.json</inputSpec>
+                            <inputSpec>http://localhost:8080/api/v3/openapi.json</inputSpec>
                             <output>${project.build.directory}/generated-sources/openapi</output>
                             <skip>false</skip>
                             <configOptions>

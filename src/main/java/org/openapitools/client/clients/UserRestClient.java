@@ -59,27 +59,27 @@ public class UserRestClient extends BaseRestClient {
             "username=" + username,
             "password=" + password
         );
-        return restClient.get(String.class, queryParams, USER_LOGIN_ENDPOINT);
+        return restClient.get(String.class, queryParams, "user", "login");
     }
     
     /**
      * Выход пользователя из системы
      */
     public void logoutUser() {
-        restClient.get(Void.class, USER_LOGOUT_ENDPOINT);
+        restClient.get(Void.class, "user", "logout");
     }
     
     /**
      * Создать пользователей из массива
      */
     public void createUsersWithArray(List<User> users) {
-        restClient.post(users, Void.class, USER_CREATE_WITH_ARRAY_ENDPOINT);
+        restClient.post(users, Void.class, "user", "createWithArray");
     }
     
     /**
      * Создать пользователей из списка
      */
     public void createUsersWithList(List<User> users) {
-        restClient.post(users, Void.class, USER_CREATE_WITH_LIST_ENDPOINT);
+        restClient.post(users, Void.class, "user", "createWithList");
     }
 }

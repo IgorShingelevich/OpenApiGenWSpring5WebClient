@@ -2,7 +2,6 @@ package org.openapitools.disabled;
 
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openapitools.base.BaseApiTest;
 import org.openapitools.base.TestDataProvider;
@@ -25,7 +24,6 @@ public class DisabledUserApiTest extends BaseApiTest {
     
     @Test
     @Description("Тест создания нового пользователя")
-    @Disabled("Демо API не сохраняет данные между запросами. API возвращает объект с null значениями, что делает невозможным проверку реального сохранения данных.")
     public void testCreateUser() {
         User testUser = TestDataProvider.createTestUser();
         
@@ -46,7 +44,6 @@ public class DisabledUserApiTest extends BaseApiTest {
     
     @Test
     @Description("Тест получения пользователя по username")
-    @Disabled("Демо API не сохраняет данные между запросами. После создания пользователя API возвращает объект с null значениями, что приводит к 404 ошибке при попытке получить пользователя по null username.")
     public void testGetUserByUsername() {
         User testUser = TestDataProvider.createTestUser();
         
@@ -68,7 +65,6 @@ public class DisabledUserApiTest extends BaseApiTest {
     
     @Test
     @Description("Тест обновления пользователя")
-    @Disabled("Демо API не сохраняет данные между запросами. API возвращает объект с null значениями, что делает невозможным проверку реального обновления данных.")
     public void testUpdateUser() {
         User testUser = TestDataProvider.createTestUser();
         
@@ -95,7 +91,6 @@ public class DisabledUserApiTest extends BaseApiTest {
     
     @Test
     @Description("Тест удаления пользователя")
-    @Disabled("Демо API не сохраняет данные между запросами. После создания пользователя API возвращает объект с null значениями, что приводит к 404 ошибке при попытке удалить пользователя по null username.")
     public void testDeleteUser() {
         User testUser = TestDataProvider.createTestUser();
         
@@ -120,7 +115,6 @@ public class DisabledUserApiTest extends BaseApiTest {
     
     @Test
     @Description("Тест входа пользователя в систему")
-    @Disabled("Демо API не поддерживает endpoint /v2/userlogin. Возвращает 404 ошибку. Возможно, endpoint изменился или не реализован в демо версии.")
     public void testLoginUser() {
         logStep("Вход пользователя в систему");
         String loginResult = userRestClient.loginUser("testuser", "password123");
@@ -133,7 +127,6 @@ public class DisabledUserApiTest extends BaseApiTest {
     
     @Test
     @Description("Тест выхода пользователя из системы")
-    @Disabled("Демо API не поддерживает endpoint /v2/userlogout. Возвращает 404 ошибку. Возможно, endpoint изменился или не реализован в демо версии.")
     public void testLogoutUser() {
         logStep("Выход пользователя из системы");
         userRestClient.logoutUser();
@@ -144,7 +137,6 @@ public class DisabledUserApiTest extends BaseApiTest {
     
     @Test
     @Description("Тест создания пользователя с полными данными")
-    @Disabled("Демо API не сохраняет данные между запросами. API возвращает объект с null значениями, что делает невозможным проверку реального сохранения данных.")
     public void testCreateFullUser() {
         User fullUser = TestDataProvider.createFullTestUser();
         

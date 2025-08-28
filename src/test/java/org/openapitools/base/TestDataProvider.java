@@ -18,8 +18,13 @@ public class TestDataProvider {
      * Создать тестового питомца с базовыми данными
      */
     public static Pet createTestPet() {
+        Category category = new Category()
+                .id(1L)
+                .name("Dogs");
+        
         return new Pet()
                 .name("TestPet_" + System.currentTimeMillis())
+                .category(category)
                 .photoUrls(Arrays.asList("https://example.com/testpet.jpg"))
                 .status(Pet.StatusEnum.AVAILABLE);
     }
@@ -55,8 +60,13 @@ public class TestDataProvider {
      * Создать тестового питомца с указанным статусом
      */
     public static Pet createTestPetWithStatus(Pet.StatusEnum status) {
+        Category category = new Category()
+                .id(1L)
+                .name("Dogs");
+        
         return new Pet()
                 .name("TestPet_" + status.getValue() + "_" + System.currentTimeMillis())
+                .category(category)
                 .photoUrls(Arrays.asList("https://example.com/testpet.jpg"))
                 .status(status);
     }
@@ -96,8 +106,13 @@ public class TestDataProvider {
     public static List<Pet> createTestPets(int count) {
         Pet[] pets = new Pet[count];
         for (int i = 0; i < count; i++) {
+            Category category = new Category()
+                    .id((long) (i % 3 + 1))
+                    .name(i % 3 == 0 ? "Dogs" : i % 3 == 1 ? "Cats" : "Birds");
+            
             pets[i] = new Pet()
                     .name("BatchPet_" + i + "_" + System.currentTimeMillis())
+                    .category(category)
                     .photoUrls(Arrays.asList("https://example.com/batch" + i + ".jpg"))
                     .status(Pet.StatusEnum.AVAILABLE);
         }
