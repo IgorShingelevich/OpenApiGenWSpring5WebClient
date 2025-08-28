@@ -1,6 +1,7 @@
 package org.openapitools.users;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.openapitools.base.BaseApiTest;
@@ -13,6 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Тесты для User API.
  * Проверяет CRUD операции и дополнительные функции для работы с пользователями.
  */
+@Feature("User")
 public class UserApiTest extends BaseApiTest {
     
     private String createdUsername;

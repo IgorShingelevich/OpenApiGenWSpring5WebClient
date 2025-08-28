@@ -1,5 +1,6 @@
 package org.openapitools.techniques;
 
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @TestMethodOrder(OrderAnnotation.class)
 @DisplayName("Use Case Testing - Тестирование случаев использования")
+@Feature("Test design technique: ")
 public class UseCaseTestingTest extends BaseApiTest {
 
     private static String currentUsername;

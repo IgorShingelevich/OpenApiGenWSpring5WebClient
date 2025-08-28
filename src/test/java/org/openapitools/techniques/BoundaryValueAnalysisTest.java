@@ -1,6 +1,7 @@
 package org.openapitools.techniques;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.openapitools.base.BaseApiTest;
@@ -23,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * - Email format validation
  * - UserStatus values (0, 1, 2...)
  */
+@Feature("Test design technique: Boundary Value Analysis")
 public class BoundaryValueAnalysisTest extends BaseApiTest {
     
     private final List<String> createdUsernames = new ArrayList<>();

@@ -1,6 +1,7 @@
 package org.openapitools.techniques;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.openapitools.base.BaseApiTest;
@@ -25,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 5. Authenticated → Logged Out (via logoutUser)
  * 6. Any State → Deleted (via deleteUser)
  */
+@Feature("Test design technique: State Transition")
 public class StateTransitionTest extends BaseApiTest {
     
     private final List<String> createdUsernames = new ArrayList<>();

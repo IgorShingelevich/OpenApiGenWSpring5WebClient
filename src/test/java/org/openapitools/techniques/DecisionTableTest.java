@@ -1,5 +1,6 @@
 package org.openapitools.techniques;
 
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * - Необходимо обеспечить полное покрытие логических комбинаций
  * - Требуется четкая документация тест-сценариев
  */
+@Feature("Test design technique: Decision Table")
 @DisplayName("Decision Table Testing - Тестирование таблиц решений")
 public class DecisionTableTest extends BaseApiTest {
 

@@ -1,6 +1,7 @@
 package org.openapitools.techniques;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.openapitools.base.BaseApiTest;
@@ -22,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * - Different user types/categories
  * - Different operational contexts
  */
+@Feature("Test design technique: Equivalence Partitioning")
 public class EquivalencePartitioningTest extends BaseApiTest {
     
     private final List<String> createdUsernames = new ArrayList<>();

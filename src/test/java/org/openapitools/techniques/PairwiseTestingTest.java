@@ -1,5 +1,6 @@
 package org.openapitools.techniques;
 
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * - Исследования показывают, что большинство дефектов проявляется в парных взаимодействиях
  */
 @DisplayName("Pairwise Testing - Попарное тестирование")
+@Feature("Test design technique: Pairwise Testing")
 public class PairwiseTestingTest extends BaseApiTest {
 
     /**

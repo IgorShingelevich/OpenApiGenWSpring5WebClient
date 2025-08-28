@@ -1,6 +1,7 @@
 package org.openapitools.pets;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.openapitools.base.BaseApiTest;
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Тесты для Pet API.
  * Проверяет CRUD операции и дополнительные функции для работы с питомцами.
  */
+@Feature("Pet")
 public class PetApiTest extends BaseApiTest {
     
     private Long createdPetId;

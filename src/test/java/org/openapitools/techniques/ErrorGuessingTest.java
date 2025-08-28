@@ -1,5 +1,6 @@
 package org.openapitools.techniques;
 
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * - Ограничено время на тестирование
  */
 @DisplayName("Error Guessing - Угадывание ошибок")
+@Feature("Test design technique: Error Guessing")
 public class ErrorGuessingTest extends BaseApiTest {
 
     @Test
